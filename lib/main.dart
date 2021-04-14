@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:galera/router_generator.dart';
+import 'package:galera/widgets/topview.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(0xFF193283),
+      statusBarColor: Color(0xFF193283),
+    ),
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    const PrimaryColor = const Color(0xFF193283);
+    const AccentColor = const Color(0XFF67CDAE);
     return MaterialApp(
-      // Initially display FirstPage
+      theme: ThemeData(
+        primaryColor: PrimaryColor,
+        accentColor: AccentColor,
+        accentColorBrightness: Brightness.dark,
+        buttonTheme: ButtonThemeData(
+          buttonColor: AccentColor,
+          shape: RoundedRectangleBorder(),
+          textTheme: ButtonTextTheme.accent,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: AccentColor,
+          ),
+        ),
+      ),
       initialRoute: '/splash',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
@@ -28,8 +51,7 @@ class _SplashState extends State<Splash> {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([]);
     Future.delayed(Duration(seconds: 3)).then((_) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.pushNamed(context, '/loginpage');
     });
   }
 
@@ -49,21 +71,72 @@ class _SplashState extends State<Splash> {
 }
 
 class MyHomePage extends StatelessWidget {
+  List<String> mydata = [
+    'Júnior Chaves Mendes',
+    'Nicolas Peres dos Santos',
+    'Samuel Chagas de Ávila',
+    'Nelson Cunha Henriques',
+    'Erasmo Paz Vieira',
+    'Michel Antunes Fagundes',
+    'Tadeu Watanabe Vila',
+    'Felipe Albuquerque Farias',
+    'Roberto Soares Pereira',
+    'Alessandro Fagundes Garcia',
+    'Júnior Chaves Mendes',
+    'Nicolas Peres dos Santos',
+    'Samuel Chagas de Ávila',
+    'Nelson Cunha Henriques',
+    'Erasmo Paz Vieira',
+    'Michel Antunes Fagundes',
+    'Tadeu Watanabe Vila',
+    'Felipe Albuquerque Farias',
+    'Roberto Soares Pereira',
+    'Alessandro Fagundes Garcia',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('First Screen'),
+          centerTitle: true,
+          title: Image.asset(
+            'assets/galera.png',
+            fit: BoxFit.contain,
+            height: 55,
+          )),
+      body: Column(
+        children: <Widget>[
+          HeaderContainer(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: mydata.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(mydata[index]),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
-      body: Center(
-        child: ElevatedButton(
-          // Within the `FirstScreen` widget
-          onPressed: () {
-            // Navigate to the second screen using a named route.
-            Navigator.pushNamed(context, '/loginpage');
-          },
-          child: Text('Launch screen'),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }
@@ -76,8 +149,12 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
-      ),
+          centerTitle: true,
+          title: Image.asset(
+            'assets/galera.png',
+            fit: BoxFit.contain,
+            height: 55,
+          )),
       body: Column(
         children: <Widget>[
           Container(
@@ -123,7 +200,8 @@ class LoginPage extends StatelessWidget {
             height: 50,
             width: 250,
             decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(20)),
             child: FlatButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/');
@@ -137,7 +215,10 @@ class LoginPage extends StatelessWidget {
           SizedBox(
             height: 130,
           ),
-          Text('New User? Create Account')
+          FlatButton(
+            onPressed: () {},
+            child: Text('New User? Create Account'),
+          )
         ],
       ),
     );
