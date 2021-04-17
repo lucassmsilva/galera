@@ -71,47 +71,33 @@ class _SplashState extends State<Splash> {
 }
 
 class MyHomePage extends StatelessWidget {
-  List<String> mydata = [
-    'Júnior Chaves Mendes',
-    'Nicolas Peres dos Santos',
-    'Samuel Chagas de Ávila',
-    'Nelson Cunha Henriques',
-    'Erasmo Paz Vieira',
-    'Michel Antunes Fagundes',
-    'Tadeu Watanabe Vila',
-    'Felipe Albuquerque Farias',
-    'Roberto Soares Pereira',
-    'Alessandro Fagundes Garcia',
-    'Júnior Chaves Mendes',
-    'Nicolas Peres dos Santos',
-    'Samuel Chagas de Ávila',
-    'Nelson Cunha Henriques',
-    'Erasmo Paz Vieira',
-    'Michel Antunes Fagundes',
-    'Tadeu Watanabe Vila',
-    'Felipe Albuquerque Farias',
-    'Roberto Soares Pereira',
-    'Alessandro Fagundes Garcia',
+  final List<String> myenterviews = [
+    'Grupo X',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          title: Image.asset(
-            'assets/galera.png',
-            fit: BoxFit.contain,
-            height: 55,
-          )),
+        centerTitle: true,
+        title: Image.asset(
+          'assets/galera.png',
+          fit: BoxFit.contain,
+          height: 55,
+        ),
+      ),
       body: Column(
         children: <Widget>[
-          HeaderContainer(),
+          SearchContainer(
+            img_src: 'assets/home.jpg',
+            input_search: 'Pesquisar Grupos',
+          ),
           Expanded(
             child: ListView.builder(
-              itemCount: mydata.length,
+              itemCount: myenterviews.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
+                  shadowColor: Theme.of(context).primaryColor,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -119,11 +105,13 @@ class MyHomePage extends StatelessWidget {
                       children: [
                         TextButton(
                           onPressed: () {},
-                          child: Text(mydata[index]),
+                          child: Text(myenterviews[index]),
                         ),
                         IconButton(
                           icon: const Icon(Icons.edit),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/mycandidates');
+                          },
                         ),
                       ],
                     ),
@@ -213,12 +201,234 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 130,
+            height: 100,
           ),
           FlatButton(
             onPressed: () {},
             child: Text('New User? Create Account'),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class MyCandidates extends StatefulWidget {
+  @override
+  _MyCandidatesState createState() => _MyCandidatesState();
+}
+
+class _MyCandidatesState extends State<MyCandidates> {
+  final List<String> mydata = [
+    'Júnior Chaves Mendes',
+    'Nicolas Peres dos Santos',
+    'Samuel Chagas de Ávila',
+    'Nelson Cunha Henriques',
+    'Erasmo Paz Vieira',
+    'Michel Antunes Fagundes',
+    'Tadeu Watanabe Vila',
+    'Felipe Albuquerque Farias',
+    'Roberto Soares Pereira',
+    'Alessandro Fagundes Garcia',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Image.asset(
+          'assets/galera.png',
+          fit: BoxFit.contain,
+          height: 55,
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Theme.of(context).accentColor,
+        currentIndex: 0, // this will be set when a new tab is tapped
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.edit),
+            label: 'Editar Faltas',
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.add_box),
+            label: 'Novo',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.send_rounded),
+            label: 'Finalizar',
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          SearchContainer(
+            img_src: 'assets/candidatos.jpg',
+            input_search: 'Pesquisar Candidatos',
+          ),
+          Expanded(
+            child: CandidatesList(mydata: mydata),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CandidatesList extends StatefulWidget {
+  const CandidatesList({
+    Key key,
+    @required this.mydata,
+  }) : super(key: key);
+
+  final List<String> mydata;
+
+  @override
+  _CandidatesListState createState() => _CandidatesListState();
+}
+
+class _CandidatesListState extends State<CandidatesList> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: widget.mydata.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/enterview',
+                        arguments: widget.mydata[index].toString());
+                  },
+                  child: Text(widget.mydata[index]),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signature',
+                        arguments: widget.mydata[index].toString());
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MySignature extends StatefulWidget {
+  final String data;
+
+  const MySignature({Key key, this.data}) : super(key: key);
+  @override
+  _MySignatureState createState() => _MySignatureState();
+}
+
+class _MySignatureState extends State<MySignature> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Image.asset(
+          'assets/galera.png',
+          fit: BoxFit.contain,
+          height: 55,
+        ),
+      ),
+      body: Column(
+        children: [
+          ImageBackground(
+            img_src: 'assets/assinatura.png',
+          ),
+          Text(
+            'Assinatura',
+            style: TextStyle(fontSize: 30),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(widget.data),
+          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Assinatura',
+                  hintText: 'Coloque sua assinatura'),
+            ),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          Container(
+            height: 50,
+            width: 250,
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Confirmar',
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MyEnterview extends StatefulWidget {
+  final String data;
+
+  const MyEnterview({Key key, this.data}) : super(key: key);
+  @override
+  _MyEnterviewState createState() => _MyEnterviewState();
+}
+
+class _MyEnterviewState extends State<MyEnterview> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Image.asset(
+          'assets/galera.png',
+          fit: BoxFit.contain,
+          height: 55,
+        ),
+      ),
+      body: Column(
+        children: [
+          ImageBackground(
+            img_src: 'assets/entrevista.jpg',
+            divisor: 5,
+          ),
+          Text(
+            'Entrevista',
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            widget.data,
+            style: TextStyle(fontSize: 12),
+          ),
+          Text('Lista de Faltas'),
         ],
       ),
     );

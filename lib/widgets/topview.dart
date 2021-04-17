@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class HeaderContainer extends StatelessWidget {
-  const HeaderContainer({Key key}) : super(key: key);
+class SearchContainer extends StatelessWidget {
+  const SearchContainer({
+    Key key,
+    @required this.img_src,
+    @required this.input_search,
+  }) : super(key: key);
+
+  final img_src;
+  final input_search;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        Container(
-          height: MediaQuery.of(context).size.height / 3,
-          width: MediaQuery.of(context).size.width,
-          child: Image.asset(
-            'assets/4565.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
+        ImageBackground(img_src: img_src),
         Positioned(
           bottom: 30.0,
           child: Container(
@@ -38,7 +38,7 @@ class HeaderContainer extends StatelessWidget {
                       width: 200,
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Pesquisar Candidato',
+                          hintText: input_search,
                         ),
                       ),
                     ),
@@ -60,6 +60,29 @@ class HeaderContainer extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ImageBackground extends StatelessWidget {
+  const ImageBackground({
+    Key key,
+    @required this.img_src,
+    this.divisor = 3,
+  }) : super(key: key);
+
+  final img_src;
+  final divisor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height / divisor,
+      width: MediaQuery.of(context).size.width,
+      child: Image.asset(
+        img_src,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

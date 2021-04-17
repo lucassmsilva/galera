@@ -13,6 +13,26 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => Splash());
       case '/loginpage':
         return MaterialPageRoute(builder: (_) => LoginPage());
+      case '/mycandidates':
+        return MaterialPageRoute(builder: (_) => MyCandidates());
+      case '/signature':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => MySignature(
+              data: args,
+            ),
+          );
+        }
+        return _errorRoute();
+      case '/enterview':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => MyEnterview(
+              data: args,
+            ),
+          );
+        }
+        return _errorRoute();
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();
