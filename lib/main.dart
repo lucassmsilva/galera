@@ -130,6 +130,8 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
+GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
 class LoginPage extends StatelessWidget {
   const LoginPage({Key key}) : super(key: key);
 
@@ -156,52 +158,73 @@ class LoginPage extends StatelessWidget {
               child: Image.asset('assets/logo.png'),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'User Name',
-                  hintText: 'Enter valid mail id as abc@gmail.com'),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                  hintText: 'Enter your secure password'),
-            ),
-          ),
-          FlatButton(
-            onPressed: () {
-              //TODO FORGOT PASSWORD SCREEN GOES HERE
-            },
-            child: Text(
-              'Forgot Password',
-              style: TextStyle(color: Colors.blue, fontSize: 15),
-            ),
-          ),
-          Container(
-            height: 50,
-            width: 250,
-            decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(20)),
-            child: FlatButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/');
-              },
-              child: Text(
-                'Login',
-                style: TextStyle(color: Colors.white, fontSize: 25),
-              ),
+          Form(
+            key: formkey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(4),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'User Name',
+                        hintText: 'Enter valid mail id as abc@gmail.com'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '* Required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(4),
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                        hintText: 'Enter your secure password'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '* Required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    //TODO FORGOT PASSWORD SCREEN GOES HERE
+                  },
+                  child: Text(
+                    'Forgot Password',
+                    style: TextStyle(color: Colors.blue, fontSize: 15),
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: FlatButton(
+                    onPressed: () {
+                      if (formkey.currentState.validate()) {
+                        Navigator.pushNamed(context, '/');
+                      }
+                    },
+                    child: Text(
+                      'Login',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(
-            height: 100,
+            height: 80,
           ),
           FlatButton(
             onPressed: () {},
