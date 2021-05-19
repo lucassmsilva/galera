@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:signature/signature.dart';
 
 class SearchContainer extends StatelessWidget {
   const SearchContainer({
@@ -84,5 +85,30 @@ class ImageBackground extends StatelessWidget {
         fit: BoxFit.cover,
       ),
     );
+  }
+}
+
+class WriteSignature extends StatefulWidget {
+  final SignatureController _controller = SignatureController(
+    penStrokeWidth: 5,
+    penColor: Colors.black,
+    exportBackgroundColor: Colors.blue,
+  );
+
+  @override
+  _WriteSignatureState createState() => _WriteSignatureState();
+}
+
+class _WriteSignatureState extends State<WriteSignature> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+        child: Signature(
+          controller: widget._controller,
+          width: 300,
+          height: 300,
+          backgroundColor: Colors.transparent,
+        ));
   }
 }

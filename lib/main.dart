@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:galera/router_generator.dart';
-import 'package:galera/widgets/topview.dart';
+import 'package:galera/widgets.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -327,7 +327,6 @@ class _CandidatesListState extends State<CandidatesList> {
 
 class MySignature extends StatefulWidget {
   final String data;
-
   const MySignature({Key key, this.data}) : super(key: key);
   @override
   _MySignatureState createState() => _MySignatureState();
@@ -349,6 +348,7 @@ class _MySignatureState extends State<MySignature> {
         children: [
           ImageBackground(
             img_src: 'assets/assinatura.png',
+            divisor: 4,
           ),
           Text(
             'Assinatura',
@@ -359,14 +359,10 @@ class _MySignatureState extends State<MySignature> {
           ),
           Text(widget.data),
           SizedBox(height: 20),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Assinatura',
-                  hintText: 'Coloque sua assinatura'),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: WriteSignature(),
             ),
           ),
           SizedBox(
