@@ -162,35 +162,45 @@ class LoginPage extends StatelessWidget {
             key: formkey,
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.all(4),
-                  child: TextFormField(
-                    decoration: InputDecoration(
+                SizedBox(
+                  height: 80,
+                  child: Padding(
+                    padding: EdgeInsets.all(4),
+                    child: TextFormField(
+                      decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'User Name',
-                        hintText: 'Enter valid mail id as abc@gmail.com'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '* Required';
-                      }
-                      return null;
-                    },
+                        hintText: 'Enter valid mail id as abc@gmail.com',
+                        errorStyle: TextStyle(fontSize: 9, height: 0.3),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '* Required';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(4),
-                  child: TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
+                SizedBox(
+                  height: 80,
+                  child: Padding(
+                    padding: EdgeInsets.all(4),
+                    child: TextFormField(
+                      obscureText: true,
+                      decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Password',
-                        hintText: 'Enter your secure password'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '* Required';
-                      }
-                      return null;
-                    },
+                        hintText: 'Enter your secure password',
+                        errorStyle: TextStyle(fontSize: 9, height: 0.3),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '* Required';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                 ),
                 FlatButton(
