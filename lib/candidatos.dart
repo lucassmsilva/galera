@@ -17,3 +17,21 @@ class Candidatos {
   SignatureController get controller => _controller;
   int get pontuacao => _pontuacao;
 }
+
+class MeusCandidatos {
+  List<Candidatos> _arr;
+
+  MeusCandidatos(this._arr);
+
+  List<Candidatos> get getListaCandidatos {
+    return _arr;
+  }
+}
+
+MeusCandidatos candidatos = new MeusCandidatos(
+  [
+    new Candidatos('Júnior Chaves Mendes'),
+    new Candidatos('Nicolas Peres dos Santos'),
+    new Candidatos('Samuel Chagas de Ávila')
+  ],
+);

@@ -255,11 +255,7 @@ class MyCandidates extends StatefulWidget {
 }
 
 class _MyCandidatesState extends State<MyCandidates> {
-  final List<Candidatos> mydata = [
-    new Candidatos('Júnior Chaves Mendes'),
-    new Candidatos('Nicolas Peres dos Santos'),
-    new Candidatos('Samuel Chagas de Ávila'),
-  ];
+  final mydata = candidatos.getListaCandidatos;
 
   @override
   Widget build(BuildContext context) {
