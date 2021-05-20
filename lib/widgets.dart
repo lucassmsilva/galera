@@ -102,13 +102,55 @@ class WriteSignature extends StatefulWidget {
 class _WriteSignatureState extends State<WriteSignature> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-        child: Signature(
-          controller: widget._controller,
-          width: 300,
-          height: 300,
-          backgroundColor: Colors.transparent,
-        ));
+    return Column(
+      children: [
+        Stack(alignment: Alignment.center, children: <Widget>[
+          Container(
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.black)),
+              child: Signature(
+                controller: widget._controller,
+                width: 300,
+                height: 300,
+                backgroundColor: Colors.transparent,
+              )),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: IconButton(
+              onPressed: () {
+                widget._controller.clear();
+              },
+              icon: Icon(Icons.delete),
+              iconSize: 30,
+            ),
+          ),
+        ]),
+        SizedBox(
+          height: 40,
+        ),
+        Container(
+          height: 50,
+          width: 250,
+          decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: FlatButton(
+            onPressed: () async {
+              if (widget._controller.isNotEmpty) {
+                var data = await widget._controller.toPngBytes();
+
+                Navigator.pop(context, data);
+              }
+              ;
+            },
+            child: Text(
+              'Confirmar',
+              style: TextStyle(color: Colors.white, fontSize: 25),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

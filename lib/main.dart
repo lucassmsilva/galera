@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:galera/router_generator.dart';
 import 'package:galera/widgets.dart';
+import 'package:galera/candidatos.dart';
+import 'package:signature/signature.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -252,17 +254,10 @@ class MyCandidates extends StatefulWidget {
 }
 
 class _MyCandidatesState extends State<MyCandidates> {
-  final List<String> mydata = [
-    'Júnior Chaves Mendes',
-    'Nicolas Peres dos Santos',
-    'Samuel Chagas de Ávila',
-    'Nelson Cunha Henriques',
-    'Erasmo Paz Vieira',
-    'Michel Antunes Fagundes',
-    'Tadeu Watanabe Vila',
-    'Felipe Albuquerque Farias',
-    'Roberto Soares Pereira',
-    'Alessandro Fagundes Garcia',
+  final List<Candidatos> mydata = [
+    new Candidatos('Júnior Chaves Mendes'),
+    new Candidatos('Nicolas Peres dos Santos'),
+    new Candidatos('Samuel Chagas de Ávila'),
   ];
 
   @override
@@ -317,7 +312,7 @@ class CandidatesList extends StatefulWidget {
     @required this.mydata,
   }) : super(key: key);
 
-  final List<String> mydata;
+  final List<Candidatos> mydata;
 
   @override
   _CandidatesListState createState() => _CandidatesListState();
@@ -338,15 +333,15 @@ class _CandidatesListState extends State<CandidatesList> {
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/enterview',
-                        arguments: widget.mydata[index].toString());
+                        arguments: widget.mydata[index].nome.toString());
                   },
-                  child: Text(widget.mydata[index]),
+                  child: Text(widget.mydata[index].nome),
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
                     Navigator.pushNamed(context, '/signature',
-                        arguments: widget.mydata[index].toString());
+                        arguments: widget.mydata[index].controller);
                   },
                 ),
               ],
@@ -359,8 +354,8 @@ class _CandidatesListState extends State<CandidatesList> {
 }
 
 class MySignature extends StatefulWidget {
-  final String data;
-  const MySignature({Key key, this.data}) : super(key: key);
+  final SignatureController controller;
+  MySignature({Key key, this.controller}) : super(key: key);
   @override
   _MySignatureState createState() => _MySignatureState();
 }
@@ -390,14 +385,29 @@ class _MySignatureState extends State<MySignature> {
           SizedBox(
             height: 10,
           ),
-          Text(widget.data),
           SizedBox(height: 20),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: WriteSignature(),
+          Stack(alignment: Alignment.center, children: <Widget>[
+            Container(
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.black)),
+                child: Signature(
+                  controller: widget.controller,
+                  height: MediaQuery.of(context).size.height / 3,
+                  width: MediaQuery.of(context).size.width,
+                  backgroundColor: Colors.transparent,
+                )),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: IconButton(
+                onPressed: () {
+                  widget.controller.clear();
+                },
+                icon: Icon(Icons.delete),
+                iconSize: 30,
+              ),
             ),
-          ),
+          ]),
           SizedBox(
             height: 40,
           ),
@@ -408,8 +418,13 @@ class _MySignatureState extends State<MySignature> {
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(20)),
             child: FlatButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                if (widget.controller.isNotEmpty) {
+                  var data = await widget.controller.toPngBytes();
+
+                  Navigator.pop(context, data);
+                }
+                ;
               },
               child: Text(
                 'Confirmar',

@@ -16,14 +16,9 @@ class RouteGenerator {
       case '/mycandidates':
         return MaterialPageRoute(builder: (_) => MyCandidates());
       case '/signature':
-        if (args is String) {
-          return MaterialPageRoute(
-            builder: (_) => MySignature(
-              data: args,
-            ),
-          );
-        }
-        return _errorRoute();
+        return MaterialPageRoute(
+          builder: (_) => MySignature(controller: args),
+        );
       case '/enterview':
         if (args is String) {
           return MaterialPageRoute(
