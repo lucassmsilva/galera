@@ -4,6 +4,7 @@ import 'package:galera/router_generator.dart';
 import 'package:galera/widgets.dart';
 import 'package:galera/candidatos.dart';
 import 'package:signature/signature.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -223,7 +224,7 @@ class LoginPage extends StatelessWidget {
                   child: FlatButton(
                     onPressed: () {
                       if (formkey.currentState.validate()) {
-                        Navigator.pushNamed(context, '/');
+                        Navigator.pushNamed(context, '/mycandidates');
                       }
                     },
                     child: Text(
@@ -447,6 +448,50 @@ class MyEnterview extends StatefulWidget {
 }
 
 class _MyEnterviewState extends State<MyEnterview> {
+  var contadorl = 0;
+  var contadorm = 0;
+  var contadorg = 0;
+  var contadore = 0;
+  var counttotal = 0;
+
+  void refreshCounter() {
+    setState(() {
+      counttotal = contadorl + contadorm + contadorg + contadore;
+    });
+  }
+
+  void addCounter(String _type, int n) {
+    switch (_type) {
+      case 'leve':
+        setState(() {
+          contadorl = n;
+        });
+        refreshCounter();
+        return;
+      case 'media':
+        setState(() {
+          contadorm = 2 * n;
+        });
+        refreshCounter();
+        return;
+
+      case 'grave':
+        setState(() {
+          contadorg = 3 * n;
+        });
+        refreshCounter();
+        return;
+      case 'eliminatoria':
+        setState(() {
+          contadore = 4 * n;
+        });
+        refreshCounter();
+        return;
+      default:
+        return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -472,7 +517,142 @@ class _MyEnterviewState extends State<MyEnterview> {
             widget.data,
             style: TextStyle(fontSize: 12),
           ),
-          Text('Lista de Faltas'),
+          Text('Lista de Faltas:    $counttotal'),
+          Expanded(
+            child: ListView(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    width: 600,
+                    child: CheckboxGroup(
+                      labels: <String>[
+                        "a. Cruzou os braços;",
+                        "b. Bocejou;",
+                        "c. Não se vestiu adequadamente;",
+                        "d. Demonstrou-se desconfortável durante a entrevista;",
+                        "e. Foi prolixo durante as respostas;",
+                        "f. Foi monossilábico durante as respostas;",
+                        "g. Falou mal do emprego anterior;",
+                        "h. Expôs sua vida pessoal em excesso;",
+                        "i. Apresentou dificuldade em articular suas respostas;",
+                        "j. Perguntou sobre salário no início da entrevista."
+                      ],
+                      onSelected: (List<String> checked) => {
+                        print(checked.length),
+                        addCounter('leve', checked.length),
+                      },
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    width: 600,
+                    child: CheckboxGroup(
+                      labels: <String>[
+                        "a. Cruzou os braços;",
+                        "b. Bocejou;",
+                        "c. Não se vestiu adequadamente;",
+                        "d. Demonstrou-se desconfortável durante a entrevista;",
+                        "e. Foi prolixo durante as respostas;",
+                        "f. Foi monossilábico durante as respostas;",
+                        "g. Falou mal do emprego anterior;",
+                        "h. Expôs sua vida pessoal em excesso;",
+                        "i. Apresentou dificuldade em articular suas respostas;",
+                        "j. Perguntou sobre salário no início da entrevista."
+                      ],
+                      onSelected: (List<String> checked) => {
+                        print(checked.length),
+                        addCounter('leve', checked.length),
+                      },
+                    ),
+                  ),
+                ),
+                Text(
+                  'Falta Média (2 pontos)',
+                  style: TextStyle(fontSize: 12),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    width: 600,
+                    child: CheckboxGroup(
+                        labels: <String>[
+                          "a. Chegou até 15 minutos atrasado;",
+                          "b. Não fez pergunta sobre a vaga ao entrevistador;",
+                          "c. Não trouxe currículo impresso;",
+                          "d. Não tem conhecimento da língua espanhola;",
+                          "e. Estava desinformado sobre a vaga;",
+                          "f. Estava desinformado sobre a empresa.",
+                        ],
+                        onSelected: (List<String> checked) => {
+                              print(checked.length),
+                              addCounter('media', checked.length),
+                            }),
+                  ),
+                ),
+                Text(
+                  'Falta Grave (3 pontos)',
+                  style: TextStyle(fontSize: 12),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    width: 600,
+                    child: CheckboxGroup(
+                        labels: <String>[
+                          "a. Chegou até 30 minutos atrasado;",
+                          "b. Cometeu erro de concordância verbal na entrevista;",
+                          "c. Não tem disponibilidade para viajar;",
+                          "d. Respondeu erroneamente a uma pergunta técnica.",
+                        ],
+                        onSelected: (List<String> checked) => {
+                              print(checked.length),
+                              addCounter('grave', checked.length),
+                            }),
+                  ),
+                ),
+                Text(
+                  'Falta Eliminatória',
+                  style: TextStyle(fontSize: 12),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    width: 600,
+                    child: CheckboxGroup(
+                        labels: <String>[
+                          "a. Chegou mais do que 30 minutos atrasado;",
+                          "b. Usou termo de baixo calão;",
+                          "c. Não tem conhecimento da língua inglesa;",
+                          "d. Saiu da entrevista antes do seu término.",
+                        ],
+                        onSelected: (List<String> checked) => {
+                              print(checked.length),
+                              addCounter('eliminatoria', checked.length),
+                            }),
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context, counttotal);
+                    },
+                    child: Text(
+                      'Finalizar',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
